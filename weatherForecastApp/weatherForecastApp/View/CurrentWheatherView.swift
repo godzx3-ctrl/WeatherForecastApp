@@ -38,7 +38,9 @@ class CurrentWheatherView : UIView {
     }
     
     /// 날씨 이미지
-    private let cloudImageView = UIImageView()
+    private let cloudImageView = UIImageView().then {
+        $0.backgroundColor = .systemGray
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -65,8 +67,8 @@ extension CurrentWheatherView {
     private func configureUI() {
         let MainStackView = UIStackView().then {
             $0.axis = .vertical
-            $0.distribution = .equalCentering
-            $0.spacing = 5
+            $0.distribution = .fill
+            $0.spacing = 10
             $0.alignment = .center
         }
         
@@ -82,7 +84,6 @@ extension CurrentWheatherView {
             $0.font = UIFont.boldSystemFont(ofSize: 20)
             $0.textColor = .white
         }
-        
         
         let maxTitleLabel = UILabel().then {
             $0.text = "최대"
@@ -102,6 +103,10 @@ extension CurrentWheatherView {
         
         MainStackView.snp.makeConstraints {
             $0.directionalEdges.equalToSuperview()
+        }
+        
+        cloudImageView.snp.makeConstraints {
+            $0.width.height.equalTo(200)
         }
     }
 }
