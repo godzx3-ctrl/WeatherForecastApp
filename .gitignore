@@ -57,7 +57,7 @@ Carthage/Build/
 # https://docs.fastlane.tools/best-practices/source-control/#source-control
 
 # API Keys (Local only)
-*/APIKey.swift
+WeatherForecastApp/Data/APIKey.swift
 
 
 fastlane/report.xml
