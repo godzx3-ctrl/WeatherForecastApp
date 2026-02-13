@@ -39,7 +39,8 @@ class CurrentWheatherView : UIView {
     
     /// 날씨 이미지
     private let cloudImageView = UIImageView().then {
-        $0.backgroundColor = .systemGray
+        $0.backgroundColor = .black
+        $0.contentMode = .scaleAspectFill
     }
     
     override init(frame: CGRect) {
@@ -54,12 +55,15 @@ class CurrentWheatherView : UIView {
 }
 
 extension CurrentWheatherView {
-    func UpdateUIData(cityName: String, currentTemp: Float, minTemp: Float, maxTemp: Float) {
+    func UpdateUIData(cityName: String, currentTemp: Float, minTemp: Float, maxTemp: Float, image: UIImage?) {
         cityLabel.text = cityName
         self.currentTemp.text =
         "\(currentTemp)ºC"
         self.minTemp.text = "\(minTemp)ºC"
         self.maxTemp.text = "\(maxTemp)ºC"
+        
+        guard let image else { return }
+        self.cloudImageView.image = image
     }
 }
 
@@ -106,7 +110,7 @@ extension CurrentWheatherView {
         }
         
         cloudImageView.snp.makeConstraints {
-            $0.width.height.equalTo(200)
+            $0.width.height.equalTo(100)
         }
     }
 }

@@ -19,7 +19,7 @@ class OpenWeatherAPIService {
             }
             let successRsponseRange = 200..<300
             if let response = response as? HTTPURLResponse,
-            successRsponseRange.contains(response.statusCode) {
+               successRsponseRange.contains(response.statusCode) {
                 guard let decodeData = try? JSONDecoder().decode(T.self, from: data) else {
                     print("Decoding Failed")
                     completion(nil)
@@ -34,6 +34,28 @@ class OpenWeatherAPIService {
             }
         }.resume()
     }
+    
+    func loadImage(url: URL, completion: @escaping (Data?) -> Void) {
+        let session = URLSession(configuration: .default)
+        session.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+            guard let data, error == nil else {
+                print("DataLoad Failed")
+                completion(nil)
+                return
+            }
+            
+            let successResponseRange = 200..<300
+            
+            if let response = response as? HTTPURLResponse,
+               successResponseRange.contains(response.statusCode) {
+                completion(data)
+            } else {
+                print("Connect Error")
+                completion(nil)
+            }
+        }.resume()
+    }
+    
 }
 
 enum currentWeatherItem: String {
@@ -61,4 +83,10 @@ enum currentWeatherItem: String {
         ]
         return urlComponents?.url
     }
+    
+    static func getImageUrl() -> URL? {
+        return URLComponents(string: "https://openweathermap.org/payload/api/media/file/10d@2x.png")?.url
+        
+    }
+    
 }

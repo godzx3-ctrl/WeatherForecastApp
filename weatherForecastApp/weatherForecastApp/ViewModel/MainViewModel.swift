@@ -5,6 +5,7 @@
 //  Created by Hanjuheon on 2/12/26.
 //
 import Foundation
+import UIKit
 
 class MainViewModel {
 
@@ -14,6 +15,7 @@ class MainViewModel {
     //MARK: - Properties
     let openApi = OpenWeatherAPIService()
     var currentWheaterModel: CurrentWeatherModel? = nil
+    var mainImage: UIImage? = nil
 }
 
 // MARK: - METHOD: API
@@ -36,5 +38,20 @@ extension MainViewModel {
                 self.uiUpdateClousure?()
             }
         }
+        
+        guard let imageUrl = currentWeatherItem.getImageUrl() else
+        {
+            print("Create URL Failed")
+            return
+        }
+        
+        openApi.loadImage(url: imageUrl) { [weak self] result in
+            guard let self, let result else { return }
+            mainImage = UIImage(data: result)
+            DispatchQueue.main.sync {
+                self.uiUpdateClousure?()
+            }
+        }
+       
     }
 }
