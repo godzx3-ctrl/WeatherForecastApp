@@ -43,9 +43,7 @@ class OpenWeatherAPIService {
                 completion(nil)
                 return
             }
-            
             let successResponseRange = 200..<300
-            
             if let response = response as? HTTPURLResponse,
                successResponseRange.contains(response.statusCode) {
                 completion(data)
@@ -55,11 +53,12 @@ class OpenWeatherAPIService {
             }
         }.resume()
     }
-    
 }
 
-enum currentWeatherItem: String {
+enum weatherItem: String {
     case currentWeatherUrl = "https://api.openweathermap.org/data/2.5/weather"
+    case forecastWeatherUrl = "https://api.openweathermap.org/data/2.5/forecast"
+
     case lat = "lat"
     case lon = "lon"
     case appid = "appid"
@@ -72,21 +71,35 @@ enum currentWeatherItem: String {
         appid: String,
         units: String
     ) -> URL? {
-        
-        var urlComponents = URLComponents(string: currentWeatherItem.currentWeatherUrl.rawValue)
-        
+        var urlComponents = URLComponents(string: weatherItem.currentWeatherUrl.rawValue)
         urlComponents?.queryItems = [
-            URLQueryItem(name: currentWeatherItem.lat.rawValue, value: lat),
-            URLQueryItem(name: currentWeatherItem.lon.rawValue, value: lon),
-            URLQueryItem(name: currentWeatherItem.appid.rawValue, value: appid),
-            URLQueryItem(name: currentWeatherItem.units.rawValue, value: units),
+            URLQueryItem(name: weatherItem.lat.rawValue, value: lat),
+            URLQueryItem(name: weatherItem.lon.rawValue, value: lon),
+            URLQueryItem(name: weatherItem.appid.rawValue, value: appid),
+            URLQueryItem(name: weatherItem.units.rawValue, value: units),
         ]
         return urlComponents?.url
     }
     
+    static func getForecastWeatherUrl(
+        lat: String,
+        lon: String,
+        appid: String,
+        units: String
+    ) -> URL? {
+        var urlComponents = URLComponents(string: weatherItem.forecastWeatherUrl.rawValue)
+        urlComponents?.queryItems = [
+            URLQueryItem(name: weatherItem.lat.rawValue, value: lat),
+            URLQueryItem(name: weatherItem.lon.rawValue, value: lon),
+            URLQueryItem(name: weatherItem.appid.rawValue, value: appid),
+            URLQueryItem(name: weatherItem.units.rawValue, value: units),
+        ]
+        return urlComponents?.url
+    }
+    
+    
     static func getImageUrl() -> URL? {
         return URLComponents(string: "https://openweathermap.org/payload/api/media/file/10d@2x.png")?.url
-        
     }
     
 }

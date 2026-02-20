@@ -12,6 +12,7 @@ import SnapKit
 /// 메인 날씨 정보 뷰
 class CurrentWheatherView : UIView {
     
+    //MARK: - Components
     /// 도시 이름 라벨
     private let cityLabel = UILabel().then {
         $0.text = "서울특별시"
@@ -36,13 +37,12 @@ class CurrentWheatherView : UIView {
         $0.font = UIFont.boldSystemFont(ofSize: 20)
         $0.textColor = .white
     }
-    
     /// 날씨 이미지
     private let cloudImageView = UIImageView().then {
         $0.backgroundColor = .black
-        $0.contentMode = .scaleAspectFill
+        
     }
-    
+    //MARK: - INIT
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .black
@@ -54,19 +54,19 @@ class CurrentWheatherView : UIView {
     }
 }
 
+//MARK: - METHOD: UI Update
 extension CurrentWheatherView {
     func UpdateUIData(cityName: String, currentTemp: Float, minTemp: Float, maxTemp: Float, image: UIImage?) {
         cityLabel.text = cityName
-        self.currentTemp.text =
-        "\(currentTemp)ºC"
+        self.currentTemp.text = "\(currentTemp)ºC"
         self.minTemp.text = "\(minTemp)ºC"
         self.maxTemp.text = "\(maxTemp)ºC"
-        
         guard let image else { return }
-        self.cloudImageView.image = image
+        cloudImageView.image = image
     }
 }
 
+//MARK: - METHOD: Configure
 extension CurrentWheatherView {
     private func configureUI() {
         let MainStackView = UIStackView().then {
